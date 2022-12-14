@@ -53,7 +53,7 @@ def test_list_products(client, product_factory):
 @pytest.mark.django_db
 def test_product_status_filter(client, product_factory):
     products = product_factory(_quantity=5, status="IN STOCK")
-    url = f'/api/products/?status=IN_STOCK'
+    url = f'/api/products/?status=IN STOCK'
 
     response = client.get(url)
     data = response.json()
@@ -63,9 +63,9 @@ def test_product_status_filter(client, product_factory):
 
 
 @pytest.mark.django_db
-def test_course_name_filter(client, product_factory):
+def test_course_title_filter(client, product_factory):
     products = product_factory(_quantity=5)
-    url = f'/api/products/?name={str(products[0].name)}'
+    url = f'/api/products/?title={str(products[0].title)}'
 
     response = client.get(url)
     data = response.json()
@@ -93,14 +93,14 @@ def test_create_product(client, image_factory):
 
 
 @pytest.mark.django_db
-def test_update_course(client, course_factory):
-    course = course_factory()
-    url = f'/api/v1/courses/{str(course.id)}/'
-    body = {"name": "course"}
+def test_update_product(client, product_factory):
+    product = product_factory()
+    url = f'/api/products/{str(product.id)}/'
+    body = {"title": "course"}
 
     response = client.patch(url, body)
     data = response.json()
-    assert data['name'] == 'course'
+    assert data['title'] == 'course'
     assert response.status_code == 200
 
 
@@ -114,5 +114,3 @@ def test_delete_product(client, product_factory):
 
     assert first_response.status_code == 204
     assert second_response.status_code == 404
-
-
